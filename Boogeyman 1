@@ -1,0 +1,32 @@
+﻿Uncover the secrets of the new emerging threat, the Boogeyman.
+
+Artefacts
+
+For the investigation proper, you will be provided with the following artefacts:
+
+Copy of the phishing email (dump.eml)
+Powershell Logs from Julianne's workstation (powershell.json)
+Packet capture from the same (capture.pcapng)
+
+TASK 2
+The Boogeyman is here!
+
+we know that the compromise started with a phishing email. Let's start with analysing the dump.eml file located in the artefacts directory.
+![Phishing email](images/phishing_email.png)
+
+Q1.What is the email address used to send the phishing email?
+The sender’s email address is visible in the From header.
+
+Q2.What is the email address of the victim?
+The victim’s email address is visible in the email headers, specifically in the To: field.
+
+Q3.What is the name of the third-party mail relay service used by the attacker based on the DKIM-Signature and List-Unsubscribe headers?
+By inspecting the DKIM-Signature and List-Unsubscribe headers in the email, we can determine the third-party mail relay service used by the attacker.
+Tip: You can use cat and grep to filter these headers.
+
+Q4.What is the name of the file inside the encrypted attachment?
+
+
+Q5.What is the password of the encrypted attachment?
+The password of the encrypted attachment is visible between the <strong> tags in the email body. The full body can be viewed using cat dump.eml.
+
