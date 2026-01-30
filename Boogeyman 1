@@ -35,7 +35,30 @@ After extracting Invoice.zip, the encoded payload can be identified by analyzing
 TASK 3
 
 Q1.What are the domains used by the attacker for file hosting and C2? Provide the domains in alphabetical order. (e.g. a.domain.com,b.domain.com)
+We searched for ScriptBlockText in powershell.json because it logs the full PowerShell commands executed, including URLs used for payload download and command-and-control communication. By extracting and parsing these URLs, we identified the attacker-controlled domains.
 
+Q2.What is the name of the enumeration tool downloaded by the attacker?
+By inspecting the ScriptBlockText PowerShell logs and filtering for GitHub URLs, we identified that the attacker downloaded a publicly available enumeration tool hosted on GitHub.
 
+Q3.What is the file accessed by the attacker using the downloaded sq3.exe binary? Provide the full file path with escaped backslashes.
+We analyzed PowerShell Script Block logs to identify attacker activity. To remove benign PowerShell internal noise (Set-StrictMode) and extract only meaningful commands, we used:
+cat powershell.json | jq -r '.. | .ScriptBlockText? // empty' | grep -v "Set-StrictMode"
+This provided a clean view of attacker‑executed PowerShell commands used for downloads, enumeration, and post‑exploitation activity.
 
+Q4.What is the software that uses the file in Q3?
+We can see it in the location of the Q3 file.
+
+Q5.What is the name of the exfiltrated file?
+We used grep "file" in powershell.json to find it.
+
+Q6.What is the name of the exfiltrated file?
+Search on internet
+
+Q7.What is the encoding used during the exfiltration attempt of the sensitive file?
+The encoding used during the exfiltration attempt can be identified by examining the same PowerShell command line used to access the file in Q3.
+
+Q8.What is the tool used for exfiltration?
+The tool used for exfiltration can be identified by examining the same PowerShell command line used to answer Q7.
+
+TASK 4
 
