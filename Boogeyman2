@@ -1,0 +1,49 @@
+After having a severe attack from the Boogeyman, Quick Logistics LLC improved its security defences. However, the Boogeyman returns with new and improved tactics, techniques and procedures. 
+
+In this room, you will be tasked to analyse the new tactics, techniques, and procedures (TTPs) of the threat group named Boogeyman.
+
+TASK 2
+
+Q1.What email was used to send the phishing email?
+Open "Resume - Application for Junior IT Analyst Role", the answer is at "From: ..."
+
+Q2.What is the email of the victim employee?
+Open "Resume - Application for Junior IT Analyst Role", the answer is at "To: ..."
+
+Q3.What is the name of the attached malicious document?
+The name of the attached malicious document can be seen at the end of the phishing email or by saving the attachment on the VM.
+
+Q4.What is the MD5 hash of the malicious attachment?
+For this case, we saved the document from Q3 and calculated its MD5 hash by running:
+md5sum Resume_WesleyTaylor.doc
+This command returned the MD5 value of the malicious attachment.
+
+Q5.What URL is used to download the stage 2 payload based on the document's macro?
+The document was opened and the macro code was reviewed by navigating to Tools → Macros → Edit Macros, then accessing Resume_WesleyTaylor.doc → Project → Modules → NewMacros, where the URL used to download the stage 2 payload was identified.
+
+Q6.What is the name of the process that executed the newly downloaded stage 2 payload?
+Using the same approach as in Q5, we analyzed the macro code and identified the process name from the shell_object.Exec call.
+
+Q7.What is the full file path of the malicious stage 2 payload?
+For this case, we used vol -f WKSTN-2961.raw windows.pstree and searched for wscript.exe
+
+Q8.What is the parent PID of the process that executed the stage 2 payload?
+We found the parent PID next to the Q7 answer in the process tree output
+
+Q9.What URL is used to download the malicious binary executed by the stage 2 payload?
+We used strings WKSTN-2961.raw | grep "boogeymanisback" | grep ".exe" to identify the URL used to download the malicious binary executed by the stage 2 payload.
+
+Q10.What is the PID of the malicious process used to establish the C2 connection?
+We used vol -f WKSTN-2961.raw windows.pstree and searched for updater.exe to identify the PID of the malicious process that established the C2 connection.
+
+Q11.What is the full file path of the malicious process used to establish the C2 connection?
+We executed vol -f WKSTN-2961.raw windows.dlllist --pid 6216. The full file path of the malicious process is shown in the first line of the output.
+
+Q12.What is the IP address and port of the C2 connection initiated by the malicious binary? (Format: IP address:port)
+See the result from above when netscan plugin.
+
+Q13.What is the full file path of the malicious email attachment based on the memory dump?
+We executed vol -f WKSTN-2961.raw windows.filescan | grep Resume_WesleyTaylor to identify the full file path of the malicious email attachment in memory.
+
+Q14.The attacker implanted a scheduled task right after establishing the c2 callback. What is the full command used by the attacker to maintain persistent access?
+We used strings WKSTN-2961.raw | grep schtasks to obtain this information.
