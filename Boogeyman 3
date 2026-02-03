@@ -1,0 +1,41 @@
+Due to the previous attacks of Boogeyman, Quick Logistics LLC hired a managed security service provider to handle its Security Operations Center. Little did they know, the Boogeyman was still lurking and waiting for the right moment to return. 
+
+In this room, you will be tasked to analyse the new tactics, techniques, and procedures (TTPs) of the threat group named Boogeyman. 
+
+TASK 2 
+
+Q1.What is the PID of the process that executed the initial stage 1 payload?
+To identify the process that executed the initial stage 1 payload, we filtered for the file name ProjectFinancialSummary_Q3.pdf in Elastic within the timeframe of August 29–30.
+By ordering the events by timestamp, we located the first execution of the document and extracted the corresponding process.pid field, which indicates the process responsible for executing the payload.
+
+Q2.The stage 1 payload attempted to implant a file to another location. What is the full command-line value of this execution? 
+To identify the command used by the stage 1 payload to implant the file, we analyzed the second related event in Elastic.
+By filtering on the process.command_line field and looking for executions involving xcopy.exe, we extracted the full command-line value used during the file implantation attempt.
+(Using the same filtered Elastic results as in Q1)
+
+Q3.The implanted file was eventually used and executed by the stage 1 payload. What is the full command-line value of this execution?
+Reviewed the third Elastic event related to stage 1 activity. Filtered on process.command_line to identify the execution of the implanted file and extract the full command-line value.
+(Using the same filtered Elastic results as in Q1)
+
+Q4.The stage 1 payload established a persistence mechanism. What is the name of the scheduled task created by the malicious script?
+Reviewed the last Elastic event related to stage 1 activity. Filtered on process.command_line and identified execution from the Temp directory, which revealed the name of the scheduled task used for persistence.
+(Using the same filtered Elastic results as in Q1)
+
+Q5.The execution of the implanted file inside the machine has initiated a potential C2 connection. What is the IP and port used by this connection? (format: IP:port)
+Filtered Elastic events for host WKSTN-0051. Reviewed network fields and identified destination.ip and destination port, revealing the potential C2 connection endpoint.
+
+Q6.The attacker has discovered that the current access is a local administrator. What is the name of the process used by the attacker to execute a UAC bypass?
+We filtered Sysmon events for Review.dat under the Microsoft-Windows-Sysmon provider. Within these events, we identified a process execution with ProcessId: 5180 and Image: C:\Windows\System32\*********.***,
+which is a known auto-elevated Windows binary commonly abused for UAC bypass.
+
+Q7.Having a high privilege machine access, the attacker attempted to dump the credentials inside the machine. What is the GitHub link used by the attacker to download a tool for credential dumping?
+To identify the credential dumping tool downloaded by the attacker, we filtered Elastic events for references to github.com.
+Although multiple hits were returned, correlating these results with PowerShell script block logging allowed us to isolate the relevant event. The first line of the script contained an Invoke-WebRequest (iwr) command, which revealed the GitHub URL used to download the credential dumping tool.
+
+Q8.After successfully dumping the credentials inside the machine, the attacker used the credentials to gain access to another machine. What is the username and hash of the new credential pair? (format: username:hash)
+Filtered Elastic events for mimikatz activity ("*mimikatz*").The command-line showed a sekurlsa::pth execution, revealing the reused username and NTLM hash.
+
+Q9.
+
+
+
