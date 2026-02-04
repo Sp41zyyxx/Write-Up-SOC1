@@ -35,7 +35,23 @@ Although multiple hits were returned, correlating these results with PowerShell 
 Q8.After successfully dumping the credentials inside the machine, the attacker used the credentials to gain access to another machine. What is the username and hash of the new credential pair? (format: username:hash)
 Filtered Elastic events for mimikatz activity ("*mimikatz*").The command-line showed a sekurlsa::pth execution, revealing the reused username and NTLM hash.
 
-Q9.
+Q9.Using the new credentials, the attacker attempted to enumerate accessible file shares. What is the name of the file accessed by the attacker from a remote share?
+Knowing that WKSTN-0051.quicklogistics.org is the compromised host, we filtered the logs for this hostname and powershell.exe. We then reviewed the process command line field to identify executed commands and searched for file enumeration activity (e.g., ls, dir, cat). This allowed us to identify the file accessed by the attacker from the remote share.
 
+Q10.After getting the contents of the remote file, the attacker used the new credentials to move laterally. What is the new set of credentials discovered by the attacker? (format: username:password)
+We filtered the logs for host.name: "WKSTN-0051.quicklogistics.org", powershell.exe, and the string "QUICKLOGISTICS". We then searched for events containing $credential to identify the new username and password used by the attacker for lateral movement.
 
+Q11.What is the hostname of the attacker's target machine for its lateral movement attempt?
+In the same event, we reviewed the message field and identified the target hostname from the -ComputerName parameter.
 
+Q12.Using the malicious command executed by the attacker from the first machine to move laterally, what is the parent process name of the malicious command executed on the second compromised machine?
+Using the same filters, we reviewed the parent process information of the executed command on the second compromised machine to identify the parent process name associated with the lateral movement activity.
+
+Q13.The attacker then dumped the hashes in this second machine. What is the username and hash of the newly dumped credentials? (format: username:hash)
+For this case, we filtered the logs for the compromised hostname and for files related to credential dumping activity. By reviewing the relevant events, we identified the dumped username and its corresponding hash at message.
+
+Q14.After gaining access to the domain controller, the attacker attempted to dump the hashes via a DCSync attack. Aside from the administrator account, what account did the attacker dump?
+For this case, we filtered the logs for process.name: "mimikatz.exe" and event.code: 1, which returned 11 events. By reviewing these events, we identified the additional account dumped by the attacker aside from the administrator account.
+
+Q15.After dumping the hashes, the attacker attempted to download another remote file to execute ransomware. What is the link used by the attacker to download the ransomware binary?
+For this case, we filtered the logs for ransomboogey.exe. By reviewing the process command line, we searched for download activity (e.g., iwr) to identify the link used to download the ransomware binary.
