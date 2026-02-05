@@ -1,0 +1,32 @@
+TASK 3
+Q1. What is the SHA256 hash of the capture.pcapng file?
+The SHA256 hash was obtained using Get-FileHash with the SHA256 algorithm.
+
+Q2. What is the SHA256 hash of the sysmon.evtx file?
+The SHA256 hash was calculated using Get-FileHash with the SHA256 algorithm.
+
+Q3. What is the SHA256 hash of the windows.evtx file?
+The SHA256 hash was generated using Get-FileHash with the SHA256 algorithm.
+
+TASK 4
+Q1. The user of this machine was compromised by a malicious document. What is the file name of the document?
+The malicious document was identified using Wireshark by filtering HTTP GET requests. Knowing that the file had a .doc extension, the traffic was analyzed to locate a GET request downloading a document, which revealed the malicious file.
+
+Q2. What is the name of the compromised user and machine?
+Format: username-machine name
+I used Find in the Sysmon logs to search for free_magicules.doc. The resulting event shows the download path, which reveals the username, and the Computer field, which identifies the machine name.
+
+Q3. What is the PID of the Microsoft Word process that opened the malicious document?
+To identify the PID of the Microsoft Word process, I used Find to search for the malicious document name. The corresponding event shows Microsoft Word as the process, where the ProcessId field reveals the PID
+
+Q4. Based on Sysmon logs, what is the IPv4 address resolved by the malicious domain used in the previous question?  
+According to the Sysmon logs, the malicious domain phishteam.xyz identified in the previous question was analyzed. To determine the resolved IPv4 address, the domain was searched on VirusTotal, where the associated IP addresses are listed.
+
+Q5. What is the base64 encoded string in the malicious payload executed by the document?
+To identify the Base64 encoded string, I used Find in the Sysmon logs and searched for Base64. The matching event shows the malicious payload execution, where the CommandLine field contains the Base64-encoded string.
+
+Q6. What is the CVE number of the exploit used by the attacker to achieve a remote code execution? 
+We can use any AI tool and paste the full CommandLine to identify the vulnerability, as the decoded payload and process behavior clearly indicate exploitation of CVE-****-***** (Follina).
+
+TASK 5
+   
