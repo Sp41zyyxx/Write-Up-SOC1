@@ -65,5 +65,28 @@ Q6.Based on the user agent, what programming language was used by the attacker t
 Format: Answer in lowercase
 Same event, but we have to see user-agent
 
+TASK 7
+Q1.The attacker was able to discover a sensitive file inside the machine of the user. What is the password discovered on the aforementioned file?
+The attacker used the q parameter to transmit Base64-encoded commands via the C2 channel. Decoding the parameter revealed a command that accessed a sensitive file, exposing the password and more.
 
+Q2.The attacker then enumerated the list of listening ports inside the machine. What is the listening port that could provide a remote shell inside the machine?
+The attacker executed a netstat command via the C2 communication to enumerate open and listening ports. Analysis of the output showed a service listening on a specific port that could allow remote shell access.
+
+Q3.The attacker then established a reverse socks proxy to access the internal services hosted inside the machine. What is the command executed by the attacker to establish the connection?
+Format: Remove the double quotes from the log.
+The Base64-decoded PowerShell command revealed the download of ch.exe via Invoke-WebRequest. By searching for ch.exe in sysmon.evtx, the relevant Sysmon event was identified, allowing us to determine the answer.
+
+Q4.What is the SHA256 hash of the binary used by the attacker to establish the reverse socks proxy connection?
+We know that
+
+Q5.What is the name of the tool used by the attacker based on the SHA256 hash? Provide the answer in lowercase.
+After identifying the SHA256 hash of the malicious binary in Q4, the hash was searched on VirusTotal. The analysis results revealed that the file corresponds to a known offensive security tool used by the attacker.
+
+Q6.The attacker then used the harvested credentials from the machine. Based on the succeeding process after the execution of the socks proxy, what service did the attacker use to authenticate?
+Format: Answer in lowercase
+
+After successfully harvesting valid credentials, the attacker established a SOCKS proxy connection to enable further lateral movement.
+To determine which service was used for authentication, Sysmon events associated with the user benimaru were reviewed after the SOCKS connection was established at June 20, 2022, 5:18:50 PM.
+Filtering for Sysmon Event ID 1 (Process Creation) revealed the execution of wsmprovhost.exe, which is the host process for Windows Remote Management (WinRM) plug-ins.
+The presence of this process indicates that the attacker authenticated to the system using the WinRM service.
 
