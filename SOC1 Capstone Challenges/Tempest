@@ -46,4 +46,24 @@ Knowing the IP from Task 4 Q4, I filtered the Sysmon network events using that I
 This revealed the C2 server used by the stage-2 payload in the format domain:port.
 
 TASK 6
-Q1.
+Q1.What is the URL of the malicious payload embedded in the document?
+By filtering the traffic for HTTP GET requests, several connections are observed. One specific GET request stands out as it downloads a suspicious file. Correlating this request with execution events confirms it as the malicious payload delivered by the document.
+
+Q2.What is the encoding used by the attacker on the c2 connection?
+We already knew this.
+
+Q3.The malicious c2 binary sends a payload using a parameter that contains the executed command results. What is the parameter used by the binary?
+By filtering the network traffic for HTTP GET requests, a request can be observed containing a query string parameter in the format ?*=.... Based on this behavior, the parameter used by the malicious C2 binary to send executed command results is identified.
+
+Q4.The malicious c2 binary connects to a specific URL to get the command to be executed. What is the URL used by the binary?
+By analyzing the same network event, the malicious C2 binary is observed connecting to a specific URL to retrieve commands to be executed.
+
+Q5.What is the HTTP method used by the binary?
+Same event too
+
+Q6.Based on the user agent, what programming language was used by the attacker to compile the binary? 
+Format: Answer in lowercase
+Same event, but we have to see user-agent
+
+
+
