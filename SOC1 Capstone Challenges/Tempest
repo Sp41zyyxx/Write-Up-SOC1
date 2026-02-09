@@ -29,15 +29,15 @@ Q6. What is the CVE number of the exploit used by the attacker to achieve a remo
 We can use any AI tool and paste the full CommandLine to identify the vulnerability, as the decoded payload and process behavior clearly indicate exploitation of CVE-****-***** (Follina).
 
 TASK 5
-Q1.The malicious execution of the payload wrote a file on the system. What is the full target path of the payload?
+Q1. The malicious execution of the payload wrote a file on the system. What is the full target path of the payload?
 We already found this in the $app variable earlier.  (Q5 TASK 4)
 
-Q2.The implanted payload executes once the user logs into the machine. What is the executed command upon a successful login of the compromised user?
+Q2. The implanted payload executes once the user logs into the machine. What is the executed command upon a successful login of the compromised user?
 Format: Remove the double quotes from the log.
 To identify the executed command upon user login, I filtered the Sysmon logs for Event ID 1 (Process Create) and reviewed the ParentCommandLine field.
 Using known indicators such as http://phishteam.xyz, and correlating with Wireshark data showing that First.exe was downloaded from the same domain, I was able to identify the command executed when the compromised user logged in.
 
-Q3.Based on Sysmon logs, what is the SHA256 hash of the malicious binary downloaded for stage 2 execution?
+Q3. Based on Sysmon logs, what is the SHA256 hash of the malicious binary downloaded for stage 2 execution?
 Based on the Sysmon logs, I identified the Event ID 1 corresponding to the stage-2 execution found in Q2. In the same event, the Hashes field contains the SHA256 hash of the malicious binary downloaded and executed during stage 2.
 
 Q4. The stage 2 payload downloaded establishes a connection to a c2 server. What is the domain and port used by the attacker?
@@ -46,47 +46,84 @@ Knowing the IP from Task 4 Q4, I filtered the Sysmon network events using that I
 This revealed the C2 server used by the stage-2 payload in the format domain:port.
 
 TASK 6
-Q1.What is the URL of the malicious payload embedded in the document?
+Q1. What is the URL of the malicious payload embedded in the document?
 By filtering the traffic for HTTP GET requests, several connections are observed. One specific GET request stands out as it downloads a suspicious file. Correlating this request with execution events confirms it as the malicious payload delivered by the document.
 
-Q2.What is the encoding used by the attacker on the c2 connection?
+Q2. What is the encoding used by the attacker on the c2 connection?
 We already knew this.
 
-Q3.The malicious c2 binary sends a payload using a parameter that contains the executed command results. What is the parameter used by the binary?
+Q3. The malicious c2 binary sends a payload using a parameter that contains the executed command results. What is the parameter used by the binary?
 By filtering the network traffic for HTTP GET requests, a request can be observed containing a query string parameter in the format ?*=.... Based on this behavior, the parameter used by the malicious C2 binary to send executed command results is identified.
 
-Q4.The malicious c2 binary connects to a specific URL to get the command to be executed. What is the URL used by the binary?
+Q4. The malicious c2 binary connects to a specific URL to get the command to be executed. What is the URL used by the binary?
 By analyzing the same network event, the malicious C2 binary is observed connecting to a specific URL to retrieve commands to be executed.
 
-Q5.What is the HTTP method used by the binary?
+Q5. What is the HTTP method used by the binary?
 Same event too
 
-Q6.Based on the user agent, what programming language was used by the attacker to compile the binary? 
+Q6. Based on the user agent, what programming language was used by the attacker to compile the binary? 
 Format: Answer in lowercase
 Same event, but we have to see user-agent
 
 TASK 7
-Q1.The attacker was able to discover a sensitive file inside the machine of the user. What is the password discovered on the aforementioned file?
+Q1. The attacker was able to discover a sensitive file inside the machine of the user. What is the password discovered on the aforementioned file?
 The attacker used the q parameter to transmit Base64-encoded commands via the C2 channel. Decoding the parameter revealed a command that accessed a sensitive file, exposing the password and more.
 
-Q2.The attacker then enumerated the list of listening ports inside the machine. What is the listening port that could provide a remote shell inside the machine?
+Q2. The attacker then enumerated the list of listening ports inside the machine. What is the listening port that could provide a remote shell inside the machine?
 The attacker executed a netstat command via the C2 communication to enumerate open and listening ports. Analysis of the output showed a service listening on a specific port that could allow remote shell access.
 
-Q3.The attacker then established a reverse socks proxy to access the internal services hosted inside the machine. What is the command executed by the attacker to establish the connection?
+Q3. The attacker then established a reverse socks proxy to access the internal services hosted inside the machine. What is the command executed by the attacker to establish the connection?
 Format: Remove the double quotes from the log.
 The Base64-decoded PowerShell command revealed the download of ch.exe via Invoke-WebRequest. By searching for ch.exe in sysmon.evtx, the relevant Sysmon event was identified, allowing us to determine the answer.
 
-Q4.What is the SHA256 hash of the binary used by the attacker to establish the reverse socks proxy connection?
+Q4. What is the SHA256 hash of the binary used by the attacker to establish the reverse socks proxy connection?
 We know that
 
-Q5.What is the name of the tool used by the attacker based on the SHA256 hash? Provide the answer in lowercase.
+Q5. What is the name of the tool used by the attacker based on the SHA256 hash? Provide the answer in lowercase.
 After identifying the SHA256 hash of the malicious binary in Q4, the hash was searched on VirusTotal. The analysis results revealed that the file corresponds to a known offensive security tool used by the attacker.
 
-Q6.The attacker then used the harvested credentials from the machine. Based on the succeeding process after the execution of the socks proxy, what service did the attacker use to authenticate?
+Q6. The attacker then used the harvested credentials from the machine. Based on the succeeding process after the execution of the socks proxy, what service did the attacker use to authenticate?
 Format: Answer in lowercase
-
 After successfully harvesting valid credentials, the attacker established a SOCKS proxy connection to enable further lateral movement.
 To determine which service was used for authentication, Sysmon events associated with the user benimaru were reviewed after the SOCKS connection was established at June 20, 2022, 5:18:50 PM.
 Filtering for Sysmon Event ID 1 (Process Creation) revealed the execution of wsmprovhost.exe, which is the host process for Windows Remote Management (WinRM) plug-ins.
 The presence of this process indicates that the attacker authenticated to the system using the WinRM service.
 
+TASK 8
+Q1. After discovering the privileges of the current user, the attacker then downloaded another binary to be used for privilege escalation. What is the name and the SHA256 hash of the binary?
+Format: binary name,SHA256 hash 
+The malicious PowerShell User-Agent ( http.user_agent == "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.17763.316" ) was used to filter HTTP traffic in Wireshark, revealing the download of spf.exe. Sysmon Event ID 1 confirmed the binary execution and provided the SHA256 hash. 
+
+Q2. Based on the SHA256 hash of the binary, what is the name of the tool used?
+Format: Answer in lowercase
+Search for the SHA-256 hash of Q1 on VirusTotal. 
+
+Q3. The tool exploits a specific privilege owned by the user. What is the name of the privilege?
+https://k4sth4.github.io/PrintSpoofer
+
+Q4. Then, the attacker executed the tool with another binary to establish a c2 connection. What is the name of the binary?
+Using the same filtering technique from Q1, the attacker was observed executing another malicious binary to establish a C2 connection. The binary identified was ch.exe.
+
+Q5. The binary connects to a different port from the first c2 connection. What is the port used?
+Filter for final.exe in sysmon
+
+TASK 9
+Q1. Upon achieving SYSTEM access, the attacker then created two users. What are the account names?
+Format: Answer in alphabetical order - comma delimited
+After gaining SYSTEM access, HTTP traffic was filtered to identify commands sent via the q= parameter. Two commands containing net user were observed, revealing the creation of two new user accounts.
+
+Q2. Prior to the successful creation of the accounts, the attacker executed commands that failed in the creation attempt. What is the missing option that made the attempt fail? 
+We know this thanks to Q1
+
+Q3. Based on windows event logs, the accounts were successfully created. What is the event ID that indicates the account creation activity?
+https://learn.microsoft.com/th-th/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4720
+
+Q4. The attacker added one of the accounts in the local administrator's group. What is the command used by the attacker?
+It's the same method as for Q1
+
+Q5. Based on windows event logs, the account was successfully added to a sensitive group. What is the event ID that indicates the addition to a sensitive local group?
+https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4732
+
+Q6.After the account creation, the attacker executed a technique to establish persistent administrative access. What is the command executed by the attacker to achieve this?
+Format: Remove the double quotes from the log.
+After creating the user accounts, Sysmon logs were filtered for sc.exe. A persistence technique was identified through Sysmon Event ID 1, where the attacker executed a service creation command to maintain administrative access.
