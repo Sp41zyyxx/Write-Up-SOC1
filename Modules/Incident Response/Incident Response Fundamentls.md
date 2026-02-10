@@ -3,7 +3,7 @@ Q2.If a security solution correctly identifies a harmful activity from a set of 
 True positive
 Q3.If a fire alarm is triggered by smoke after cooking, is it a true positive or a false positive?
 False positive
-
+ 
 TASK 3 
 Q1.A user's system got compromised after downloading a file attachment from an email. What type of incident is this? 
 Malware infection
