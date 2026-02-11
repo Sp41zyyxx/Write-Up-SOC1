@@ -1,0 +1,37 @@
+https://tryhackme.com/room/identificationandscoping
+
+TASK 2
+Q1. What is the Subject of Ticket#2023012398704232?
+We open Outlook and search for the ticket number 2023012398704232.
+After locating the email, we review the Subject field to identify the "ticket subject".
+
+Q2. According to your colleague John, the issue outlined on Ticket#2023012398704232 could be related to what?
+Could this issue be related to the missing email security (e.g., ***, **** & ***** *******) on our mail server I reported a while back?
+
+Q3. Your colleague requested what kind of data pertaining to the machine WKSTN-02?
+Additionally, can you retrieve the *** ***** **** for the following machine:
+•	WKSTN-02 (172.16.1.151)
+
+TASK 3
+Q1. Based on Ticket#2023012398704231 and Asset Inventory shown in this task, who owns the computer that needs Endpoint Protection definitions updated?
+Hostnamte of affected computer:	LPTP-01.swiftspend.thm - IP 172.16.1.153 
+Laptop	LPTP-01	172.16.1.153	Windows 10 Pro	****** *******
+
+Q2. Based on the email exchanges and SoD shown in this task, what was the phishing domain where the compromised credentials in Ticket#2023012398704232 were submitted?
+Domain	****-***-**-**-*.**********.***	Phishing domain	Ticket#2023012398704232
+
+Q3. Based on Ticket#2023012398704233, what phishing domain should be added to the SoD?
+https://**********.****/data/Update365/office365/40e7baa2f826a57fcf04e5202526f8bd/?email=zoe.duncan@swiftspend.finance&error
+
+TASK 4
+Q1. Concerning Ticket#2023012398704232 and according to your colleague John, what domain should be added to the SoD since it was used for email spoofing?
+Received: by *****.** (Postfix, from userid 33)
+
+Q2. Concerning the available artefacts gathered for analysis of Ticket#2023012398704232, who is the other user that received a similar phishing email but did not open a ticket nor report the issue?
+Also, alex.swift@swiftspend.finance does not exist on Exchange. However, *********.*****@**********.******* does
+
+Q3. Concerning Ticket#2023012398704232, what additional IoC could be added to the SoD and be used as a pivot point for discovery?
+Open Ticket#2023012398704232, go to View → From, and review the Message Trace to extract an additional IoC (e.g., sender IP or domain) to pivot the investigation.
+
+Q4. Based on the email exchanges and attachments in those exchanges, what is the password of the compromised user?
+Similar to Q3, we review the email thread and its attachments. After opening michael_ascot.csv, we identify the compromised user’s password listed as password=*********
