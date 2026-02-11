@@ -1,0 +1,30 @@
+https://tryhackme.com/room/intelcreationandcontainment
+
+TASK 2
+Q1. What does the acronym IDS mean?
+For example, collecting evidence from infrastructure such as ********* ********* ******* (IDS) and Security and Information Management Systems (SIEMS). 
+
+TASK 3
+Q1. What is the name of the containment strategy used when the responders closely monitor the adversary?
+********** ********* is a less aggressive strategy in containment. Although, it isn’t entirely risk-free.
+
+Q2. What containment strategy is considered to be the most aggressive?
+****** ********* is considered to be a pretty aggressive - but effective - strategy
+
+TASK 4 
+Q1.What is the term for a set of characters that can be used to give an attribution to a file? Note: The answer is expecting the singular noun of this term.
+A **** (e.g., MD5, SHA1, SHA256) is a unique string of characters generated from a file, commonly used for file identification and attribution in digital forensics and cybersecurity.
+
+TASK 5
+Q1. It is understandable why an organisation may want to eradicate the adversary immediately. However, without adequately scoping and creating threat intelligence with an effective containment strategy, we may miss exactly how truly compromised we are.
+The referenced classic arcade game is: *****-*-**** It is understandable why an organisation may want to eradicate the adversary immediately
+
+TASK 6 
+Q1. What is the IP address of the adversary?
+I opened the PCAP file in Wireshark and used Edit → Find Packet to search for dropper.exe.This led me to the HTTP GET request where the file was downloaded.The Destination IP address in that packet corresponds to the adversary’s IP.
+
+Q2. What is the name of the file that gets downloaded from the adversary's infrastructure?
+same file as in Q1
+
+Q3. What is the SHA-256 hash value of the value of the executable on the Desktop?
+Command:  sha256sum (archive)
