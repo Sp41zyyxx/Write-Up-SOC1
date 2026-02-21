@@ -64,8 +64,23 @@ The tasks created during execution are:
 
 <img width="1860" height="801" alt="image" src="https://github.com/user-attachments/assets/fd6ea944-e3bc-4cf4-85bd-97b43d138d3b" />
 
+#### Q8. he malicious binary dispci.exe displayed a suspicious message upon execution, urging users to disable their defenses. This tactic aimed to evade detection and enable the ransomware's full execution. What suspicious message was displayed in the Console upon executing this binary?
 
+We analyzed the binary execution using [ANY.RUN](https://app.any.run/tasks/c7f11627-5d84-42d4-a18f-991f0c4e3215). By reviewing the process execution and console output, we observed the message displayed in the CMD window urging users to disable their defenses.
 
+<img width="1830" height="816" alt="image" src="https://github.com/user-attachments/assets/58980287-b73b-49a0-a4f6-aea1fa04a7ed" />
 
+#### Q9. To modify the Master Boot Record (MBR) and encrypt the victim’s hard drive, the ransomware utilized a specific driver. Recognizing this driver is essential for understanding the encryption mechanism. What is the name of the driver used to encrypt the hard drive and modify the MBR?
 
+Read https://securelist.com/bad-rabbit-ransomware/82851/
+
+<img width="1867" height="836" alt="image" src="https://github.com/user-attachments/assets/e23e20ec-b5c7-4adf-8fb5-c9655e2ce4b6" />
+
+#### Q10. Attribution is key to understanding the threat landscape. The ransomware was tied to a known attack group through its tactics, techniques, and procedures (TTPs). What is the name of the threat actor responsible for this ransomware campaign?
+
+https://malpedia.caad.fkie.fraunhofer.de/details/win.eternal_petya
+
+#### Q11. The ransomware rendered the system unbootable by corrupting critical system components. Identifying the technique used provides insight into its destructive capabilities. What is the MITRE ATT&CK ID for the technique used to corrupt the system firmware and prevent booting?
+
+https://mitre.ptsecurity.com/en-US/T1495
 
