@@ -34,6 +34,37 @@ From the sandbox execution video, we can see the initial payload execution proce
 
 #### Q4. Inside the dropped file, the malware contained hardcoded artifacts, including usernames and passwords that could provide clues about its origins or configuration. What is the only person's username found within the dropped file?
 
+To identify the username contained within the dropped file, we analyzed public threat intelligence related to the ransomware. We reviewed the technical analysis published by Kaspersky on https://securelist.com/bad-rabbit-ransomware/82851/
+
+From the report and supporting images, we observed that the malware contained hardcoded credentials inside the dropped file, including a specific username. The only person's username identified in the analysis is:
+
+<img width="1858" height="727" alt="image" src="https://github.com/user-attachments/assets/36851455-5e14-4892-a6ac-f12a5dfa3e14" />
+
+#### Q5. After execution, the ransomware communicated with a C2 server. Recognizing its communication techniques can assist in mitigation. What MITRE ATT&CK sub-technique describes the ransomware’s use of web protocols for sending and receiving data?
+
+We analyzed the sample on [Hybrid Analysis](https://hybrid-analysis.com/sample/630325cac09ac3fab908f903e3b00d0dadd5fdaa0875ed8496fcbb97a558d0da) and reviewed the MITRE ATT&CK sub-techniques section. Searching for “Web Protocols” shows the technique used by the ransomware for C2 communication.
+
+<img width="1875" height="836" alt="image" src="https://github.com/user-attachments/assets/70963375-6f94-432c-990c-bce4ada685fd" />
+
+#### Q6. Persistence mechanisms are a hallmark of sophisticated ransomware. Identifying how persistence was achieved can aid in recovery and prevention of reinfection. What is the MITRE ATT&CK Sub-Technique ID associated with the ransomware’s persistence technique?
+
+We analyzed the sample on Hybrid Analysis and reviewed the MITRE ATT&CK section. By searching for “persistence”, we found the technique describing the initial or recurring execution of malicious code, which indicates how the ransomware maintains persistence.
+
+<img width="1667" height="772" alt="image" src="https://github.com/user-attachments/assets/b0e13cd2-38e0-4679-9a63-c26a609a4820" />
+
+#### Q7. As part of its infection chain, the ransomware created specific tasks to ensure its continued operation. Recognizing these tasks is crucial for system restoration. What are the names of the tasks created by the ransomware during execution?
+
+We analyzed the execution timeline in ANY.RUN and reviewed the commands executed by the malware. By inspecting the schtasks activity, we identified the scheduled tasks created by the ransomware to maintain execution and persistence.
+
+The tasks created during execution are:
+
+`schtasks /Create /RU SYSTEM /SC ONSTART /TN (*USER*) /TR "C:\WINDOWS\system32\cmd.exe /C Start \"\" \"C:\Windows\dispci.exe\" -id 970686855 && exit"`
+
+`/c schtasks /Create /SC once /TN (*USER*) /RU SYSTEM /TR "C:\WINDOWS\system32\shutdown.exe /r /t 0 /f" /ST 08:58:00`
+
+<img width="1860" height="801" alt="image" src="https://github.com/user-attachments/assets/fd6ea944-e3bc-4cf4-85bd-97b43d138d3b" />
+
+
 
 
 
