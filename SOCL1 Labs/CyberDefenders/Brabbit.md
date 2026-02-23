@@ -1,5 +1,5 @@
 https://cyberdefenders.org/blueteam-ctf-challenges/brabbit/ 
-##### DIFFICULT = MEDIUM
+##### DIFFICULT = `MEDIUM`
 ##### Category: `Threat Intel`
 
 ##### Tactics:`Execution` `Persistence` `Privilege Escalation` `Command and Control` `Impact`
