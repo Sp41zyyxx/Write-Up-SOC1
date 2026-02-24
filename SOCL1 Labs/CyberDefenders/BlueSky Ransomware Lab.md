@@ -49,10 +49,33 @@ is defined.
 From this section, we extracted the registry keys modified by the attacker to disable Windows Defender functionalities, listed in the same order as they appear in the script.
 <img width="1918" height="767" alt="image" src="https://github.com/user-attachments/assets/96dc523a-c324-467b-8bb3-9c53ffc45dfb" />
 
+#### Q9. Can you determine the URL of the second file downloaded by the attacker?
+I used the same method as in Q6 and identified the second .exe file
+<img width="1327" height="877" alt="image" src="https://github.com/user-attachments/assets/046e1ce3-23f5-4de1-93c5-9990b35b14be" />
 
+#### Q10. Identifying malicious tasks and understanding how they were used for persistence helps in fortifying defenses against future attacks. What's the full name of the task created by the attacker to maintain persistence?
+To identify the persistence mechanism, we analyzed the /checking.ps1 PowerShell script. Within this script, the `function CleanerEtc` contains commands related to scheduled task creation. By reviewing this function, we were able to identify the full name of the malicious task created by the attacker to maintain persistence.
+<img width="1272" height="147" alt="image" src="https://github.com/user-attachments/assets/f6435c25-4e84-40da-872a-7019b2dbf41e" />
 
+#### Q11. Based on your analysis of the second malicious file, What is the MITRE ID of the main tactic the second file tries to accomplish?
+During the analysis, we observed that the malware modifies the registry path HKLM:\SOFTWARE\Microsoft\Windows Defender, indicating an attempt to disable Windows Defender protections. This behavior aligns with the MITRE ATT&CK tactic Defense Evasion (TA****), as the objective is to bypass security mechanisms and avoid detection.
 
+#### Q12. What's the invoked PowerShell script used by the attacker for dumping credentials?
+By applying the filter `http.request.method == "GET"` in Wireshark, we were able to enumerate all files retrieved via HTTP requests. One of the downloaded files contained the term `DUMP` in its name, suggesting credential harvesting activity. Further analysis confirmed that this PowerShell script was responsible for credential dumping.
+<img width="1895" height="837" alt="image" src="https://github.com/user-attachments/assets/9d908c3a-a61a-4e00-852a-0046478abb1d" />
 
+#### Q13. Understanding which credentials have been compromised is essential for assessing the extent of the data breach. What's the name of the saved text file containing the dumped credentials?
+By analyzing /ichigo-lite.ps1, we identified the text file where the dumped credentials are saved.
+<img width="1603" height="841" alt="image" src="https://github.com/user-attachments/assets/8ad07c26-f618-4094-b620-0fadf99f50fb" />
 
+#### Q14. Knowing the hosts targeted during the attacker's reconnaissance phase, the security team can prioritize their remediation efforts on these specific hosts. What's the name of the text file containing the discovered hosts?
+By applying the filter http.request.method == "GET" in Wireshark, we identified the downloaded files. The only file with a .txt extension corresponds to the text file containing the discovered hosts.
+<img width="1915" height="250" alt="image" src="https://github.com/user-attachments/assets/9ec57593-1c5a-4324-af47-0bef8e0bfafb" />
 
+#### Q15. After hash dumping, the attacker attempted to deploy ransomware on the compromised host, spreading it to the rest of the network through previous lateral movement activities using SMB. You’re provided with the ransomware sample for further analysis. By performing behavioral analysis, what’s the name of the ransom note file?
+After generating the MD5 hash of javaw.exe, we searched it on VirusTotal. The behavioral analysis revealed the name of the ransom note file dropped by the ransomware.
+<img width="1853" height="775" alt="image" src="https://github.com/user-attachments/assets/8b660412-750c-4997-97ad-be84e44bad16" />
+
+#### Q16. In some cases, decryption tools are available for specific ransomware families. Identifying the family name can lead to a potential decryption solution. What's the name of this ransomware family?
+<img width="1662" height="712" alt="image" src="https://github.com/user-attachments/assets/bb902ba2-a9c4-4742-9874-df602941398d" />
 
