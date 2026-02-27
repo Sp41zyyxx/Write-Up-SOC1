@@ -36,7 +36,7 @@ The malware derives its AES encryption key by computing the MD5 hash of a hardco
 In the function f5Mo9y1FK1yJy4poW9CE, the string is retrieved from a static variable and passed to MD5CryptoServiceProvider.ComputeHash().
 By locating the declaration of this variable in the decompiled source code using grep, we identified the literal value assigned to it.
 This hardcoded value is used as the base material for key derivation.
-use `grep -n "DhMybcleyUJ8bZbaqtAkL3FTz6SQ840xELBsFWt9yekNCVYQ1WgRtjL1bTF3" XWorm.decompiled.cs` 
+use `grep -n "DhMybcleyUJ8bZbaqtAkL3FTz6SQ840xELBsFWt9yekNCVYQ1WgRtjL1bTF3" XWorm.decompiled.cs` for get `XWorm.decompiled.cs` i use: `ilspycmd XWorm.malware -o output_folder`
 
 
 
